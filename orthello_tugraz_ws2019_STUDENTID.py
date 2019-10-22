@@ -75,39 +75,53 @@ def printBoard(boardData):
     print("     0   1   2   3   4   5   6   7  ")
 
 
+def getPlayerInput(player):
+    if player == 1:
+        return input(PROMPT_PLAYER_1)
+    elif player == 2:
+        return input(PROMPT_PLAYER_2)
+    else:
+        # ToDo:  AI Input
+        raise NotImplementedError
+
+
 def setStone(row, col, player):
     if game_field[row][col] == 0:
         game_field[row][col] = player
+        return True
     else:
         print(ERROR_INVALID_INPUT)
+        return False
 
 
 def interpretInput(ch):
-    print(len(ch))
     if len(ch) == 2:
         inputList = list(ch)
         if isinstance(inputList[0], str):
             inputList[0] = ord(inputList[0]) - 65
-            return inputList
-    else:
-        print(ERROR_INVALID_INPUT)
+            inputList = list(map(int, inputList))
+            if inputList[1] <= 7:
+                return inputList
+    return -1
 
 
 def main():
+    player = 1
     printBoard(game_field)
     while True:
-        player=1
-        if player == 1:
-          inputStr = input(PROMPT_PLAYER_1)
-        else:
-          inputStr = input(PROMPT_PLAYER_2)
+        inputStr = getPlayerInput(player)
         inputList = interpretInput(inputStr)
-        setStone(int(inputList[0]), int(inputList[1]), player)
+        while inputList == -1:
+            print(ERROR_INVALID_INPUT)
+            inputStr = getPlayerInput(player)
+            inputList= interpretInput(inputStr)
+
+        setStone(inputList[0], inputList[1], player)
         printBoard(game_field)
         if player == 1:
-          player += 1
+            player += 1
         else:
-          player -= 1
+            player -= 1
 
 
 if __name__ == "__main__":
