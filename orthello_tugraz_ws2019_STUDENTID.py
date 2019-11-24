@@ -77,14 +77,11 @@ def printBoard(boardData):
     print("     0   1   2   3   4   5   6   7  ")
 
 
-def getInput(player):
+def getPlayerInput(player):
     if player == 1:
         return input(PROMPT_PLAYER_1)
     elif player == 2:
         return input(PROMPT_PLAYER_2)
-    else:
-        # ToDo:  AI Input
-        raise NotImplementedError
 
 
 def getEnemy(player):
@@ -120,18 +117,21 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
 
     if wStep == 0:
         for x in range(x, rborder, rStep):
+            print(1)
             if game_field[x][y] == 0:
                 return False
             if game_field[x][y] == player:
                 return True
     elif rStep == 0:
         for y in range(y, wborder, wStep):
+            print(2)
             if game_field[x][y] == 0:
                 return False
             if game_field[x][y] == player:
                 return True
     else:
         for x, y in zip(range(x, rborder, rStep), range(y, wborder, wStep)):
+            print(3)
             if game_field[x][y] == 0:
                 return False
             if game_field[x][y] == player:
@@ -140,38 +140,37 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
 
 def isValidMove(row, col, player):
     enemy = getEnemy(player)
-    if not isCorner(row, col):
-        if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
-            if isTurnableInDirection(row, col, 1, 1, player):
-                return True
+    if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
+        if isTurnableInDirection(row, col, 1, 1, player):
+            return True
 
-        if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
-            if isTurnableInDirection(row, col, 1, -1, player):
-                return True
+    if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
+        if isTurnableInDirection(row, col, 1, -1, player):
+            return True
 
-        if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
-            if isTurnableInDirection(row, col, -1, 1, player):
-                return True
+    if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
+        if isTurnableInDirection(row, col, -1, 1, player):
+            return True
 
-        if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
-            if isTurnableInDirection(row, col, -1, -1, player):
-                return True
+    if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
+        if isTurnableInDirection(row, col, -1, -1, player):
+            return True
 
-        if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
-            if isTurnableInDirection(row, col, 0, 1, player):
-                return True
+    if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
+        if isTurnableInDirection(row, col, 0, 1, player):
+            return True
 
-        if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
-            if isTurnableInDirection(row, col, 0, -1, player):
-                return True
+    if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
+        if isTurnableInDirection(row, col, 0, -1, player):
+            return True
 
-        if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
-            if isTurnableInDirection(row, col, 1, 0, player):
-                return True
+    if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
+        if isTurnableInDirection(row, col, 1, 0, player):
+            return True
 
-        if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
-            if isTurnableInDirection(row, col, -1, 0, player):
-                return True
+    if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
+        if isTurnableInDirection(row, col, -1, 0, player):
+            return True
 
     return False
 
@@ -375,13 +374,13 @@ def main():
         if availableFields == 64:
             break
         if player != 2 or not ai:
-            inputStr = getInput(player)
+            inputStr = getPlayerInput(player)
             inputList = interpretInput(inputStr, player)
             if inputList != -1 and inputList != -2:
                 stonePlaced = setStone(inputList[0], inputList[1], player)
 
             while (inputList == -1 or not stonePlaced) and inputList != -2:
-                inputStr = getInput(player)
+                inputStr = getPlayerInput(player)
                 inputList = interpretInput(inputStr, player)
                 if inputList != -1 and inputList != -2:
                     stonePlaced = setStone(inputList[0], inputList[1], player)
