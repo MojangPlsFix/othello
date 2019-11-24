@@ -1,2 +1,2 @@
-# othello
-Othello Project for Design your own App Seminar
+# Othello
+Othello/Reversi Project for Design your own App Seminar
