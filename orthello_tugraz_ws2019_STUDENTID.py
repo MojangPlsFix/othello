@@ -117,21 +117,18 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
 
     if wStep == 0:
         for x in range(x, rborder, rStep):
-            print(1)
             if game_field[x][y] == 0:
                 return False
             if game_field[x][y] == player:
                 return True
     elif rStep == 0:
         for y in range(y, wborder, wStep):
-            print(2)
             if game_field[x][y] == 0:
                 return False
             if game_field[x][y] == player:
                 return True
     else:
         for x, y in zip(range(x, rborder, rStep), range(y, wborder, wStep)):
-            print(3)
             if game_field[x][y] == 0:
                 return False
             if game_field[x][y] == player:
@@ -359,7 +356,6 @@ def getAiInput():
 
     inputList = [row, col]
     strRow = chr(row + 65)
-    print(PROMPT_AI + strRow + str(col))
     return inputList
 
 
