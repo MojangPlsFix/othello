@@ -139,29 +139,30 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
 def isValidMove(row, col, player):
     enemy = getEnemy(player)
     isValidVar = False
-    if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
-        isValidVar= isValidVar or isTurnableInDirection(row, col, 1, 1, player)
+    if  game_field[row][col] == 0:
+        if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 1, player)
 
-    if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
-        isValidVar= isValidVar or isTurnableInDirection(row, col, 1, -1, player)
+        if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, -1, player)
 
-    if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
-        isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 1, player)
+        if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 1, player)
 
-    if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
-        isValidVar= isValidVar or isTurnableInDirection(row, col, -1, -1, player)
+        if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, -1, player)
 
-    if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
-        isValidVar = isValidVar or isTurnableInDirection(row, col, 0, 1, player)
+        if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 0, 1, player)
 
-    if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
-        isValidVar= isValidVar or  isTurnableInDirection(row, col, 0, -1, player)
+        if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 0, -1, player)
 
-    if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
-       isValidVar= isValidVar or isTurnableInDirection(row, col, 1, 0, player)
+        if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 0, player)
 
-    if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
-        isValidVar= isValidVar or isTurnableInDirection(row, col, -1, 0, player)
+        if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
+            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 0, player)
 
     return isValidVar
 
@@ -348,6 +349,7 @@ def getAiInput():
         col = random.randrange(0, 7)
 
     inputList = [row, col]
+    print(PROMPT_AI + chr(65 + row) + str(col))
     return inputList
 
 
