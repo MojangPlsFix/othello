@@ -135,41 +135,35 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
                 return True
 
 
+# TODO: make it more efficent
 def isValidMove(row, col, player):
     enemy = getEnemy(player)
+    isValidVar = False
     if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
-        if isTurnableInDirection(row, col, 1, 1, player):
-            return True
+        isValidVar= isValidVar or isTurnableInDirection(row, col, 1, 1, player)
 
     if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
-        if isTurnableInDirection(row, col, 1, -1, player):
-            return True
+        isValidVar= isValidVar or isTurnableInDirection(row, col, 1, -1, player)
 
     if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
-        if isTurnableInDirection(row, col, -1, 1, player):
-            return True
+        isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 1, player)
 
     if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
-        if isTurnableInDirection(row, col, -1, -1, player):
-            return True
+        isValidVar= isValidVar or isTurnableInDirection(row, col, -1, -1, player)
 
     if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
-        if isTurnableInDirection(row, col, 0, 1, player):
-            return True
+        isValidVar = isValidVar or isTurnableInDirection(row, col, 0, 1, player)
 
     if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
-        if isTurnableInDirection(row, col, 0, -1, player):
-            return True
+        isValidVar= isValidVar or  isTurnableInDirection(row, col, 0, -1, player)
 
     if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
-        if isTurnableInDirection(row, col, 1, 0, player):
-            return True
+       isValidVar= isValidVar or isTurnableInDirection(row, col, 1, 0, player)
 
     if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
-        if isTurnableInDirection(row, col, -1, 0, player):
-            return True
+        isValidVar= isValidVar or isTurnableInDirection(row, col, -1, 0, player)
 
-    return False
+    return isValidVar
 
 
 # TODO: make it KISS
@@ -339,7 +333,6 @@ def setAi():
     uInput = ""
     while not (uInput == INPUT_COMPUTER or uInput == INPUT_HUMAN):
         uInput = input(PROMPT_HUMAN_AI)
-        print(uInput)
     if uInput == INPUT_COMPUTER:
         return True
     return False
@@ -355,7 +348,6 @@ def getAiInput():
         col = random.randrange(0, 7)
 
     inputList = [row, col]
-    strRow = chr(row + 65)
     return inputList
 
 
