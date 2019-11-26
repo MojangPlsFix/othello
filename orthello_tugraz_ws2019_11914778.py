@@ -79,9 +79,16 @@ def printBoard(boardData):
 
 def getPlayerInput(player):
     if player == 1:
-        return input(PROMPT_PLAYER_1)
+        try:
+            return input(PROMPT_PLAYER_1)
+        except:
+            sys.exit(0)
+
     elif player == 2:
-        return input(PROMPT_PLAYER_2)
+        try:
+            return input(PROMPT_PLAYER_2)
+        except:
+            sys.exit(0)
 
 
 def getEnemy(player):
@@ -139,7 +146,7 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
 def isValidMove(row, col, player):
     enemy = getEnemy(player)
     isValidVar = False
-    if  game_field[row][col] == 0:
+    if game_field[row][col] == 0:
         if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
             isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 1, player)
 
@@ -333,7 +340,10 @@ def countPlayer(player):
 def setAi():
     uInput = ""
     while not (uInput == INPUT_COMPUTER or uInput == INPUT_HUMAN):
-        uInput = input(PROMPT_HUMAN_AI)
+        try:
+            uInput = input(PROMPT_HUMAN_AI)
+        except:
+            sys.exit(0)
     if uInput == INPUT_COMPUTER:
         return True
     return False
