@@ -35,6 +35,7 @@ INPUT_SKIP = "skip"
 INPUT_QUIT = "quit"
 
 # END OF STATIC STRINGS
+AI_LEVEL = 1
 
 game_field = [
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -109,7 +110,9 @@ def isOutOfRange(row, col):
     return False
 
 
-def isTurnableInDirection(row, col, rStep, wStep, player):
+def isTurnableInDirection(row, col, rStep, wStep, player, retAmount):
+    amount = 0
+    ret = False
     x = row + rStep
     y = col + wStep
     if rStep == -1:
@@ -125,51 +128,88 @@ def isTurnableInDirection(row, col, rStep, wStep, player):
     if wStep == 0:
         for x in range(x, rborder, rStep):
             if game_field[x][y] == 0:
-                return False
+                break
             if game_field[x][y] == player:
-                return True
-    elif rStep == 0:
-        for y in range(y, wborder, wStep):
-            if game_field[x][y] == 0:
-                return False
-            if game_field[x][y] == player:
-                return True
+                ret = True
     else:
-        for x, y in zip(range(x, rborder, rStep), range(y, wborder, wStep)):
-            if game_field[x][y] == 0:
-                return False
-            if game_field[x][y] == player:
-                return True
+        if rStep == 0:
+            for y in range(y, wborder, wStep):
+                if game_field[x][y] == 0:
+                    break
+                if game_field[x][y] == player:
+                    ret = True
+        else:
+            for x, y in zip(range(x, rborder, rStep), range(y, wborder, wStep)):
+                if game_field[x][y] == 0:
+                    break
+                if game_field[x][y] == player:
+                    ret = True
+    if retAmount:
+        if ret:
+            return retAmount
+        else:
+            return 0
+    return ret
 
 
-# TODO: make it more efficent
+def getTurns(row, col, player):
+    enemy = getEnemy(player)
+    isValidVar = 0
+    if game_field[row][col] == 0:
+        if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, 1, 1, player, True)
+
+        if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, 1, -1, player, True)
+
+        if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, -1, 1, player, True)
+
+        if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, -1, -1, player, True)
+
+        if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, 0, 1, player, True)
+
+        if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, 0, -1, player, True)
+
+        if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, 1, 0, player, True)
+
+        if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
+            isValidVar += isValidVar or isTurnableInDirection(row, col, -1, 0, player, True)
+
+    return isValidVar
+
+
 def isValidMove(row, col, player):
     enemy = getEnemy(player)
     isValidVar = False
     if game_field[row][col] == 0:
         if not isOutOfRange(row + 1, col + 1) and game_field[row + 1][col + 1] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 1, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 1, player, False)
 
         if not isOutOfRange(row + 1, col - 1) and game_field[row + 1][col - 1] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, -1, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, -1, player, False)
 
         if not isOutOfRange(row - 1, col + 1) and game_field[row - 1][col + 1] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 1, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 1, player, False)
 
         if not isOutOfRange(row - 1, col - 1) and game_field[row - 1][col - 1] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, -1, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, -1, player, False)
 
         if not isOutOfRange(row, col + 1) and game_field[row][col + 1] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, 0, 1, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 0, 1, player, False)
 
         if not isOutOfRange(row, col - 1) and game_field[row][col - 1] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, 0, -1, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 0, -1, player, False)
 
         if not isOutOfRange(row + 1, col) and game_field[row + 1][col] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 0, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, 1, 0, player, False)
 
         if not isOutOfRange(row - 1, col) and game_field[row - 1][col] == enemy:
-            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 0, player)
+            isValidVar = isValidVar or isTurnableInDirection(row, col, -1, 0, player, False)
 
     return isValidVar
 
@@ -354,9 +394,21 @@ def getAiInput():
         return -2
     row = -1
     col = -1
-    while not isValidMove(row, col, 2):
-        row = random.randrange(0, 7)
-        col = random.randrange(0, 7)
+    bestScore = 0
+    if AI_LEVEL == 0:
+        while not isValidMove(row, col, 2):
+            row = random.randrange(0, 7)
+            col = random.randrange(0, 7)
+
+    else:
+        for x in range(0, 8, 1):
+            for y in range(0, 8, 1):
+                if isValidMove(x, y, 2):
+                    currentTurns = getTurns(x, y, 2)
+                    if bestScore < currentTurns:
+                        bestScore = currentTurns
+                        row = x
+                        col = y
 
     inputList = [row, col]
     print(PROMPT_AI + chr(65 + row) + str(col))
