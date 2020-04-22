@@ -1,6 +1,5 @@
 # Orthello - DYOA at TU Graz WS 2019
-# Name:       Fabian Roßmann
-# Student ID: 11914778
+# Name:       fabrossmann
 
 # STATIC STRINGS - DO NOT CHANGE
 import random
